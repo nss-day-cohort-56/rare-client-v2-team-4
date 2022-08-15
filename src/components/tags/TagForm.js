@@ -14,6 +14,7 @@ export const TagForm = ({ loadTags, tag, setTag }) => {
   }
 
   return (
+    <>
     <form>
       <div className="field">
         <label className="label">New Tag:</label>
@@ -32,12 +33,15 @@ export const TagForm = ({ loadTags, tag, setTag }) => {
               }
             } />
         </div>
-      </div>
+      
       <button
         onClick={(evt) => saveTagEvent(evt)}
         className="button is-primary">
         Save
       </button>
+        {tag.label ? <button onClick={()=> setTag({label: ""})} className="button is-danger">Cancel</button> : "" }
+      </div>
     </form>
+    </>
   )
 }
