@@ -33,11 +33,18 @@ export const CategoryForm = ({ loadCategories, category, setCategory }) => {
             } />
         </div>
       </div>
+      <div className="buttons">
+
       <button
-        onClick={(evt) => saveCategoryEvent(evt)}
+        onClick={(evt) => {
+          saveCategoryEvent(evt)
+          setCategory({label: ""})
+        }}
         className="button is-primary">
         Save
       </button>
+          {category.label ? <button onClick={()=> setCategory({label: ""})} className="button is-danger">Cancel</button> : "" }
+      </div>
     </form>
   )
 }
