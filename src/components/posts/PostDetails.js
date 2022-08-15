@@ -31,8 +31,8 @@ export const PostDetails = ({ userId }) => {
             </span>
           </div>
           <div className="media-content">
-            <p className="title is-4">{post.user?.first_name} {post.user?.last_name}</p>
-            <p className="subtitle is-6">@{post.user?.username}</p>
+            <p className="title is-4">{post.user?.user.first_name} {post.user?.user.last_name}</p>
+            <p className="subtitle is-6">@{post.user?.user.username}</p>
           </div>
         </div>
 

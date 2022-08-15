@@ -7,6 +7,7 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
     <thead>
       <tr>
         <th>Title</th>
+        <th>Author</th>
         <th>Publication Date</th>
         <th>Category</th>
         <th></th>
@@ -14,9 +15,10 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
     </thead>
     <tbody>
       {
-        posts.map(post => {
+        posts.sort((a, b) => { return b.publication_date.localeCompare(a.publication_date) }).map(post => {
           return <tr key={post.id}>
             <td><Link to={`/posts/${post.id}`}>{post.title}</Link></td>
+            <td>{post.user.user.first_name} {post.user.user.last_name}</td>
             <td>{post.publication_date}</td>
             <td>{post.category?.label}</td>
             <td>

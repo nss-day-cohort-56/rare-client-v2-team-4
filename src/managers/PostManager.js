@@ -75,7 +75,7 @@ export const getPostsByTag = (id) => {
 }
 
 export const getPostsByTitle = (search) => {
-  return fetch(`http://localhost:8000/posts?title=${search}`, {
+  return fetch(`http://localhost:8000/posts?q=${search}`, {
     headers: {
       'Authorization': `Token ${localStorage.getItem('auth_token')}`
     }
