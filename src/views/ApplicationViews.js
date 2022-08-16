@@ -11,6 +11,7 @@ import { PostList } from "../components/posts/postList"
 import { EditPost } from "../components/posts/EditPost"
 import { CommentForm } from "../components/comments/CommentForm"
 import { CommentsList } from "../components/comments/CommentList"
+import { ProfileList } from "../components/profile/ProfileList"
 
 
 
@@ -31,6 +32,9 @@ export const ApplicationViews = ({ token, setToken, setUserId, userId }) => {
       <Route path="/posts/:postId/comments" element={<CommentsList userId={userId} />} />
       <Route path="/posts/:postId" element={<PostDetails userId={userId} />} />
       <Route path="/posts/:postId/add-comment" element={<CommentForm />} />
+
+      <Route path="/profiles" element={<ProfileList />} />
+      
     </Route>
   </Routes>
 }

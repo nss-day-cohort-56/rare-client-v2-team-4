@@ -32,7 +32,7 @@ export const Register = ({ setToken, setUserId }) => {
           if ("valid" in res && res.valid) {
             setToken(res.token)
             setUserId(res.user_id)
-            navigate("/")
+            .then(() => navigate("/posts"))
           }
         })
     } else {
