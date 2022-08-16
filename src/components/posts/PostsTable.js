@@ -16,6 +16,10 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
     <tbody>
       {
         posts.sort((a, b) => { return b.publication_date.localeCompare(a.publication_date) }).map(post => {
+          /* Only Display Posts if Posts are approved */
+          if (!post.approved) {
+            return <></>
+          } else {
           return <tr key={post.id}>
             <td><Link to={`/posts/${post.id}`}>{post.title}</Link></td>
             <td>{post.user.user.first_name} {post.user.user.last_name}</td>
@@ -36,6 +40,7 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
               }
             </td>
           </tr>
+          }
         })
       }
     </tbody>
