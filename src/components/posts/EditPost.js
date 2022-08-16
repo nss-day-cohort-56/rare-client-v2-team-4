@@ -14,8 +14,9 @@ export const EditPost = () => {
 
   useEffect(() => {
     getSinglePost(postId).then(data => {
-      setPost(data)
-      const tagIds = data.tags.map(t => t.id)
+      data.category = data.category.id
+      setPost(data) 
+      const tagIds = data.tags?.map(t => t.id) 
       setTagsForPost(tagIds)
     })
     getAllCategories().then(categoriesData => setCategories(categoriesData))
@@ -35,8 +36,8 @@ export const EditPost = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-
-    updatePost(postId, post).then((post) => {
+    post.tags = tagsForPost
+    updatePost(postId, post).then((data) => {
       navigate(`/posts/${postId}`)
     })
   }
@@ -93,8 +94,8 @@ export const EditPost = () => {
               <label htmlFor="category_id" className="label">Category: </label>
               <div className="control">
                 <div className="select">
-                  <select name="category_id"
-                    value={parseInt(post.category_id)}
+                  <select name="category"
+                    value={post.category}
                     onChange={handleChange}>
                     <option value="0">Select a category</option>
                     {

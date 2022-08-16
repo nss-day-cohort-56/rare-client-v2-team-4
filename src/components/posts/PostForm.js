@@ -7,7 +7,9 @@ import { getAllTags } from "../../managers/TagManager"
 export const PostForm = () => {
   const [categories, setCategories] = useState([])
   const [tags, setTags] = useState([])
-  const [post, setPost] = useState({})
+  const [post, setPost] = useState({
+    image_url: ''
+  })
   const [tagsForPost, setTagsForPost] = useState([])
   let navigate = useNavigate()
 
@@ -30,15 +32,16 @@ export const PostForm = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-
+    let todayDate = new Date()
     const postData = {
       ...post,
+      publication_date: todayDate.toISOString().split('T')[0],
       tags: tagsForPost
     }
 
-    createPost(postData).then((post) => {
-      navigate(`posts/${post.id}`)
-    })
+    createPost(postData).then( (post) => 
+      navigate(`/posts/${post.id}`)
+    )
   }
 
   const handleChange = (event) => {
@@ -93,7 +96,7 @@ export const PostForm = () => {
               <label htmlFor="category_id" className="label">Category: </label>
               <div className="control">
                 <div className="select">
-                  <select name="category_id"
+                  <select name="category"
                     value={post.category_id}
                     onChange={handleChange}>
                     <option value="0">Select a category</option>

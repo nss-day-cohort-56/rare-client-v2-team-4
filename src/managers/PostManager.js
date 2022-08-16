@@ -49,7 +49,7 @@ export const getSinglePost = (id) => {
 }
 
 export const getCurrentUsersPosts = () => {
-  return fetch(`http://localhost:8000/posts?user_id=${localStorage.getItem('auth_token')}`, {
+  return fetch(`http://localhost:8000/posts?user_id=${localStorage.getItem('user_id')}`, {
     headers: {
       'Authorization': `Token ${localStorage.getItem('auth_token')}`
     }
@@ -75,7 +75,7 @@ export const getPostsByTag = (id) => {
 }
 
 export const getPostsByTitle = (search) => {
-  return fetch(`http://localhost:8000/posts?title=${search}`, {
+  return fetch(`http://localhost:8000/posts?q=${search}`, {
     headers: {
       'Authorization': `Token ${localStorage.getItem('auth_token')}`
     }
