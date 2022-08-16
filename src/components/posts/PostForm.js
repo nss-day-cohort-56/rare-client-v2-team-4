@@ -39,9 +39,9 @@ export const PostForm = () => {
       tags: tagsForPost
     }
 
-    createPost(postData).then((post) => {
-      navigate(`posts/${post.id}`)
-    })
+    createPost(postData).then( (post) => 
+      navigate(`/posts/${post.id}`)
+    )
   }
 
   const handleChange = (event) => {
