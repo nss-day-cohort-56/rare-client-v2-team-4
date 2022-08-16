@@ -17,15 +17,6 @@ export const createTag = (tag) => {
   }).then(res => res.json())
 }
 
-export const deleteTag = (tagId) => {
-  return fetch(`http://localhost:8000/tags/${tagId}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': `Token ${localStorage.getItem('auth_token')}`
-    }
-  })
-}
-
 export const updateTag = (tag) => {
   return fetch(`http://localhost:8000/tags/${tag.id}`, {
       method: 'PUT',
@@ -36,3 +27,13 @@ export const updateTag = (tag) => {
       body: JSON.stringify(tag)
   })
 }
+
+export const deleteTag = (tagId) => {
+  return fetch(`http://localhost:8000/tags/${tagId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Token ${localStorage.getItem('auth_token')}`
+    }
+  })
+}
+
