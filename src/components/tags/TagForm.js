@@ -14,30 +14,39 @@ export const TagForm = ({ loadTags, tag, setTag }) => {
   }
 
   return (
-    <form>
-      <div className="field">
-        <label className="label">New Tag:</label>
-        <div className="control">
+    <>
+      <form>
+        <div className="field">
+          <label className="label">New Tag:</label>
+          <div className="control">
 
-          <input
-            required
-            type="text"
-            className="input"
-            value={tag.label}
-            onChange={
-              (evt) => {
-                const copy = { ...tag }
-                copy.label = evt.target.value
-                setTag(copy)
-              }
-            } />
+            <input
+              required
+              type="text"
+              className="input"
+              value={tag.label}
+              onChange={
+                (evt) => {
+                  const copy = { ...tag }
+                  copy.label = evt.target.value
+                  setTag(copy)
+                }
+              } />
+          </div>
         </div>
-      </div>
-      <button
-        onClick={(evt) => saveTagEvent(evt)}
-        className="button is-primary">
-        Save
-      </button>
-    </form>
+        <div className="buttons">
+
+          <button
+            onClick={(evt) => {
+              saveTagEvent(evt)
+              setTag({ label: "" })
+            }}
+            className="button is-primary">
+            Save
+          </button>
+          {tag.label ? <button onClick={() => setTag({ label: "" })} className="button is-danger">Cancel</button> : ""}
+        </div>
+      </form>
+    </>
   )
 }
