@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { deleteComment, getCommentsByPostId } from '../../managers/CommentManager' 
 import { FaTrashAlt, FaUserCircle, FaEdit } from 'react-icons/fa';
 
@@ -7,6 +7,7 @@ import { FaTrashAlt, FaUserCircle, FaEdit } from 'react-icons/fa';
 export const CommentsList = ({ userId }) => {
   const [comments, setComments] = useState([])
   const { postId } = useParams()
+  const navigate = useNavigate()
 
   const loadComments = useCallback(() => {
     getCommentsByPostId(postId).then((commentsData) => {
@@ -47,7 +48,7 @@ export const CommentsList = ({ userId }) => {
                   <p>Subject: {comment.subject}</p>
                   <p>{comment.content}</p>
                   <p>Date of Post: {comment.date}</p>
-                  
+                  <button onClick={() => navigate(`/posts/${postId}`)}>⬅️</button>
                 </div>
 
               </div>
