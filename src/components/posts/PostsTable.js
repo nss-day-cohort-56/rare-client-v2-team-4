@@ -26,7 +26,12 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
                 deleteClickEvent ?
                   <div className="buttons">
                     <button className="button is-warning" onClick={() => navigate(`/posts/${post.id}/edit`)}>edit</button>
-                    <button className="button is-danger" onClick={() => { deleteClickEvent(post.id) }}>delete</button>
+                    <button className="button is-danger" onClick={(evt) => {
+                        evt.preventDefault()
+                        if (window.confirm("Are you sure you want to delete this post?")) {
+                            return deleteClickEvent(post.id)
+                            }
+                    }}>delete</button>
                   </div> : <></>
               }
             </td>

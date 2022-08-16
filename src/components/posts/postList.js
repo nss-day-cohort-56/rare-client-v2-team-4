@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react"
+import { getAllCategories } from "../../managers/CategoryManager"
 import { getAllPosts, getPostsByCategory, getPostsByTag, getPostsByTitle } from "../../managers/PostManager"
+import { getAllTags } from "../../managers/TagManager"
 import { PostsTable } from "./PostsTable"
 
 
 export const PostList = () => {
   const [posts, setPosts] = useState([])
+  const [categoryList, setCategories] = useState([])
+  const [tagList, setTags] = useState([])
   const [chosenCategory, setChosenCategory] = useState(0)
   const [chosenTag, setChosenTag] = useState(0)
   const [searchTerms, setSearchTerms] = useState("")
@@ -14,6 +18,8 @@ export const PostList = () => {
 
   useEffect(() => {
     loadPosts()
+    getAllCategories().then(data => setCategories(data))
+    getAllTags().then(data => setTags(data))
   }, [])
 
   useEffect(
@@ -68,18 +74,18 @@ export const PostList = () => {
         setChosenCategory(parseInt(chosenCategory))
       }}>
         <option value="0">Search by Category...</option>
-        {/* {categoryList.map(category => {
+        {categoryList.map(category => {
             return <option value={`${category.id}`}>{category.label}</option>
-        })} */}
+        })}
       </select>
       <select className="categoryFilter" onChange={(event) => {
-        let chosenCategory = event.target.value
+        let chosenTag = event.target.value
         setChosenTag(parseInt(chosenTag))
       }}>
         <option value="0">Search by Tag...</option>
-        {/* {categoryList.map(category => {
-            return <option value={`${category.id}`}>{category.label}</option>
-        })} */}
+        {tagList.map(tag => {
+            return <option value={`${tag.id}`}>{tag.label}</option>
+        })}
       </select>
       <div className="searchBar">
         <input
