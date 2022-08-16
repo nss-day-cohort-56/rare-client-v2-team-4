@@ -2,22 +2,28 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getAllCategories } from "../../managers/CategoryManager"
 import { createPost } from "../../managers/PostManager"
+import { getSingleProfile } from "../../managers/ProfileManager"
 import { getAllTags } from "../../managers/TagManager"
 
 export const PostForm = () => {
   const [categories, setCategories] = useState([])
   const [tags, setTags] = useState([])
+  const [profile, setProfile] = useState({})
   const [post, setPost] = useState({
     image_url: ''
   })
   const [tagsForPost, setTagsForPost] = useState([])
+  const currentUserId = parseInt(localStorage.getItem('user_id'))
   let navigate = useNavigate()
 
   useEffect(() => {
     getAllCategories().then(categoriesData => setCategories(categoriesData))
     getAllTags().then(tagsData => setTags(tagsData))
+    getSingleProfile(currentUserId).then(data => setProfile(data))
   }, [])
 
+
+  
 
   const updateTags = (tagId) => {
     let tagsCopy = [...tagsForPost]
@@ -37,8 +43,16 @@ export const PostForm = () => {
       ...post,
       publication_date: todayDate.toISOString().split('T')[0],
       tags: tagsForPost
+      
     }
-
+    /* if user is admin, post is approved */
+    if (profile?.user?.is_staff) {
+      postData.approved = true
+    } else {
+      postData.approved = false
+    }
+    console.log(postData);
+    console.log(profile?.user?.is_staff);
     createPost(postData).then( (post) => 
       navigate(`/posts/${post.id}`)
     )
