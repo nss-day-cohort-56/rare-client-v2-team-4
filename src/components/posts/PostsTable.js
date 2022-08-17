@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { updatePost } from "../../managers/PostManager";
+import { getAllPosts, updatePost } from "../../managers/PostManager";
 import { getSingleProfile } from "../../managers/ProfileManager";
 
-export const PostsTable = ({ posts, deleteClickEvent }) => {
+export const PostsTable = ({ posts, deleteClickEvent, setPosts }) => {
   let navigate = useNavigate();
   const [profile, setProfile] = useState({});
   const currentUserId = parseInt(localStorage.getItem("user_id"));
@@ -14,14 +14,11 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
 
   const handleApproval = (post) => {
     const copy = {...post}
+    copy.category = post.category.id
+    copy.tags = post.tags?.map(t => t.id) 
     copy.approved = true
-    updatePost(post.id, copy).then(()=>navigate('/posts'))
+    updatePost(post.id, copy).then(()=>getAllPosts()).then((data)=>setPosts(data))
   }
-
-  /* Get current user
-  check if current user is admin
-  if current user is admin, show all posts with approval status
-  if current user is not admin, show all approved posts only */
 
   return (
     <table className="table is-fullwidth">
@@ -31,7 +28,7 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
           <th>Author</th>
           <th>Publication Date</th>
           <th>Category</th>
-          {profile?.user?.is_staff ? <th>Status</th> : <></>}
+          {profile?.user?.is_staff ? <><th>Status</th><th>Approval</th></> : <></>}
           <th></th>
         </tr>
       </thead>
@@ -43,7 +40,8 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
           .map((post) => {
             /* if current user is admin, show all posts with approval status */
             return (
-              <tr key={post.id}>
+              <>
+              {profile?.user?.is_staff || post.approved ? <tr key={post.id}>
                 <td>
                   <Link to={`/posts/${post.id}`}>{post.title}</Link>
                 </td>
@@ -72,7 +70,7 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
                           handleApproval(post)
                         }}
                       >
-                        Approve
+                        approve
                       </button>
                     </td>
                   )
@@ -108,7 +106,9 @@ export const PostsTable = ({ posts, deleteClickEvent }) => {
                     <></>
                   )}
                 </td>
-              </tr>
+              </tr> : <></>}
+              </>
+              
             );
           })}
       </tbody>
