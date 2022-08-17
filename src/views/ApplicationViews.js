@@ -13,6 +13,7 @@ import { CommentForm } from "../components/comments/CommentForm"
 import { CommentsList } from "../components/comments/CommentList"
 import { ProfileList } from "../components/profile/ProfileList"
 import { ProfileDetails } from "../components/profile/Profile"
+import { ReactionList } from "../components/reactions/ReactionList"
 
 
 export const ApplicationViews = ({ token, setToken, setUserId, userId }) => {
@@ -22,6 +23,7 @@ export const ApplicationViews = ({ token, setToken, setUserId, userId }) => {
     <Route element={<Authorized token={token} />}>
       {/* Add Routes here */}
       <Route path="/tags" element={<TagList />} />
+      <Route path="/reactions" element={<ReactionList />} />
 
       <Route path="/posts" element={<PostList />} />
       <Route path="/my-posts" element={<MyPost />} />

@@ -16,6 +16,7 @@ export const PostsTable = ({ posts, deleteClickEvent, setPosts }) => {
     const copy = {...post}
     copy.category = post.category.id
     copy.tags = post.tags?.map(t => t.id) 
+    copy.reactions = post.reactions?.map(r => r.id)
     copy.approved = true
     updatePost(post.id, copy).then(()=>getAllPosts()).then((data)=>setPosts(data))
   }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getAllCategories } from "../../managers/CategoryManager"
 import { getSinglePost, updatePost } from "../../managers/PostManager"
+import { getAllReactions } from "../../managers/ReactionManager"
 import { getAllTags } from "../../managers/TagManager"
 
 export const EditPost = () => {
@@ -9,6 +10,8 @@ export const EditPost = () => {
   const [categories, setCategories] = useState([])
   const [tags, setTags] = useState([])
   const [tagsForPost, setTagsForPost] = useState([])
+  const [reactions, setReactions] = useState([])
+  const [reactionsForPost, setReactionsForPost] = useState([])
   const { postId } = useParams()
   let navigate = useNavigate()
 
@@ -34,9 +37,32 @@ export const EditPost = () => {
     setTagsForPost(tagsCopy)
   }
 
+  useEffect(() => {
+    getSinglePost(postId).then(data => {
+      data.category = data.category.id
+      setPost(data) 
+      const reactionIds = data.reactions?.map(t => t.id) 
+      setReactionsForPost(reactionIds)
+    })
+    getAllCategories().then(categoriesData => setCategories(categoriesData))
+    getAllReactions().then(data => setReactions(data))
+  }, [postId])
+
+  const updateReactions = (reactionId) => {
+    const reactionsCopy = [...reactionsForPost]
+    const index = post.reactions.indexOf(reactionId)
+    if (index < 0) {
+      reactionsCopy.push(reactionId)
+    } else {
+      reactionsCopy.splice(index, 1)
+    }
+    setReactionsForPost(reactionsCopy)
+  }
+
   const handleSubmit = (evt) => {
     evt.preventDefault()
     post.tags = tagsForPost
+    post.reactions = reactionsForPost
     updatePost(postId, post).then((data) => {
       navigate(`/posts/${postId}`)
     })
@@ -122,6 +148,25 @@ export const EditPost = () => {
                             updateTags(tag.id)
                           }} />
                         {tag.label}
+                      </label>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+            <div className="field">
+              <label htmlFor="content" className="emoji">Reactions:</label>
+              {
+                reactions.map(reaction => (
+                  <div className="field" key={`reaction--${reaction.id}`}>
+                    <div className="control">
+                      <label className="checkbox" htmlFor={reaction.emoji}>
+                        <input type="checkbox" name={reaction.emoji}
+                          checked={reactionsForPost.includes(reaction.id)}
+                          onChange={() => {
+                            updateReactions(reaction.id)
+                          }} />
+                        {reaction.emoji}
                       </label>
                     </div>
                   </div>
