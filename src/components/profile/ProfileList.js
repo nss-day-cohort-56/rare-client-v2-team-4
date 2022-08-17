@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import { useState } from "react"
 import { getProfiles, editUserActive } from "../../managers/ProfileManager"
 import { Link } from "react-router-dom"
-import { getProfiles } from "../../managers/ProfileManager"
 
 export const ProfileList = (props) => {
     const [profiles, setProfiles] = useState([])
