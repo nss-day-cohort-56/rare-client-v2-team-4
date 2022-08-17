@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { deleteComment, getCommentsByPostId } from '../../managers/CommentManager' 
 import { FaTrashAlt, FaUserCircle, FaEdit } from 'react-icons/fa';
-import { UpdateComment } from "./EditForm";
 
 
 export const CommentsList = ({ userId }) => {
