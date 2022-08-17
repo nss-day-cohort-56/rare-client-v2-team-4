@@ -1,9 +1,10 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
-import { getProfiles, editUser } from "../../managers/ProfileManager"
+import { getProfiles, editUserActive } from "../../managers/ProfileManager"
 
 export const ProfileList = (props) => {
-    const [ profiles, setProfiles ] = useState([])
+    const [profiles, setProfiles] = useState([])
+    const [showInactive, setInactive] = useState(false)
 
     useEffect(() => {
         getProfiles().then(data => setProfiles(data))
@@ -17,27 +18,59 @@ export const ProfileList = (props) => {
         }
     }
 
- 
+    const userActive = (user) => {
+        if (user.is_active === true) {
+            return <>Deactivate</>
+        } else {
+            return <>Activate</>
+        }
+    }
 
-    return (
+    const userInactive = () => {
+        setInactive(!showInactive)
+    }
+
+
+    return <>
+        <button onClick={() => userInactive()}>View Deactivated</button>
+        {showInactive
+            ? profiles.map(p => {
+                if (p.user.is_active === false) {
+                    return <>
+                        <p>Full Name: {p.user.first_name} {p.user.last_name}</p>
+                        <button onClick={(evt) => {
+                            evt.preventDefault()
+                            if (window.confirm("Are you sure?")) {
+                                return editUserActive(p).then(() => getProfiles().then(data => setProfiles(data)))
+                            }
+                        }}>Reactivate</button>
+                    </>
+                }
+            })
+
+            : <></>
+        }
         <article className="profiles">
+            <br />
+            <h2><b>Active Users</b></h2>
             {
                 profiles.sort(((a, b) => { return a.user.username.localeCompare(b.user.username) })).map(profile => {
-                    return <section key={`profile--${profile.id}`} className="profile">
-                        <div className="profile__fullName">Full Name: {profile.user.first_name} {profile.user.last_name}</div>
-                        <div className="profile__userName">Username: {profile.user.username}</div>
-                        <div className="profile__userType">User Type: {userType(profile.user)}</div>
-                        <button onClick={(evt) => {
-                        evt.preventDefault()
-                        if (window.confirm("Are you sure you want to deactivate this user?")) {
-                            profile.user.is_active = false
-                            return editUser(profile)
-                            }
-                    }}>Deactivate</button>
-                        <br/><br/>
-                    </section>
+                    if (profile.user?.is_active) {
+                        return <section key={`profile--${profile.id}`} className="profile">
+                            <div className="profile__fullName">Full Name: {profile.user.first_name} {profile.user.last_name}</div>
+                            <div className="profile__userName">Username: {profile.user.username}</div>
+                            <div className="profile__userType">User Type: {userType(profile.user)}</div>
+                            <button onClick={(evt) => {
+                                evt.preventDefault()
+                                if (window.confirm("Are you sure?")) {
+                                    return editUserActive(profile).then(()=>setInactive(false)).then(() => getProfiles().then(data => setProfiles(data)))
+                                }
+                            }}>{userActive(profile.user)}</button>
+                            <br /><br />
+                        </section>
+                    }
                 })
             }
         </article>
-    )
+    </>
 }

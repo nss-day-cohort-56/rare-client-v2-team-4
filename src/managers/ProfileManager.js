@@ -1,14 +1,14 @@
 export const getProfiles = () => {
     return fetch("http://localhost:8000/profiles", {
-        headers:{
+        headers: {
             "Authorization": `Token ${localStorage.getItem("auth_token")}`
         }
     })
         .then(response => response.json())
 }
 
-export const editUser = (user) => {
-    return fetch(`http://localhost:8000/profiles/${user.id}`, {
+export const editUserActive = (user) => {
+    return fetch(`http://localhost:8000/profiles/${user.id}/user_active`, {
         method: "PUT",
         headers: {
             "Authorization": `Token ${localStorage.getItem("auth_token")}`,
@@ -19,9 +19,9 @@ export const editUser = (user) => {
 }
 export const getSingleProfile = (id) => {
     return fetch(`http://localhost:8000/profiles/${id}`, {
-      headers: {
-        'Authorization': `Token ${localStorage.getItem('auth_token')}`
-      }
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        }
     })
-      .then(res => res.json())
-  }
+        .then(res => res.json())
+}
