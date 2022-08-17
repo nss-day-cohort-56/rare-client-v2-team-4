@@ -9,7 +9,9 @@ export const CommentForm = () => {
 
   const [comment, setComment] = useState({
     post_id: postId,
-    content: ""
+    subject: "",
+    content: "",
+    date: ""
   })
 
   const handleSave = (event) => {
@@ -20,23 +22,57 @@ export const CommentForm = () => {
 
   const handleUpdate = (evt) => {
     const copy = { ...comment }
-    copy.content = evt.target.value
+    copy[evt.target.name] = evt.target.value
     setComment(copy)
   }
 
   return (
-    <section className="section">
+    <form className="commentForm">
       <div className="card">
+      <h2 className="title">Add A New Comment</h2>
         <div className="card-content">
-          <div className="field">
-            <label className="label">Add a new comment</label>
-            <div className="control">
+
+          <fieldset>
+            <div className="form-group">
+            <label>Subject:</label>
+              <div className="control">
+              <input className="input" required autoFocus
+                type="text"
+                value={comment.subject}
+                name = "subject"
+                onChange={handleUpdate } />
+              </div>
+            </div>
+          </fieldset>
+          
+          <fieldset>
+            <div className="form-group">
+            <label>Comment:</label>
+              <div className="control">
               <input className="input" required autoFocus
                 type="text"
                 value={comment.content}
+                name = "content"
                 onChange={handleUpdate } />
+              </div>
             </div>
-          </div>
+          </fieldset>
+
+            <br></br>
+
+            <fieldset>
+            <div className="form-group">
+            <label>Date:</label>
+              <div className="control">
+              <input className="input" required autoFocus
+                type="date"
+                value={comment.date}
+                name = "date"
+                onChange={handleUpdate } />
+              </div>
+            </div>
+          </fieldset>
+
           <div className="field is-grouped">
             <div className="control">
               <button
@@ -48,6 +84,6 @@ export const CommentForm = () => {
           </div>
         </div>
       </div>
-    </section>
+    </form>
   )
 }

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { deleteComment, getCommentsByPostId } from '../../managers/CommentManager' 
 import { FaTrashAlt, FaUserCircle, FaEdit } from 'react-icons/fa';
+import { UpdateComment } from "./EditForm";
 
 
 export const CommentsList = ({ userId }) => {
@@ -26,6 +27,7 @@ export const CommentsList = ({ userId }) => {
   }
 
   return <section className="section">
+    <button onClick={() => navigate(`/posts/${postId}`)}>⬅️ Back to Posts</button>
     <article className="panel is-info">
       <p className="panel-heading">
         Comments
@@ -47,8 +49,7 @@ export const CommentsList = ({ userId }) => {
                   </p>
                   <p>Subject: {comment.subject}</p>
                   <p>{comment.content}</p>
-                  <p>Date of Post: {comment.date}</p>
-                  <button onClick={() => navigate(`/posts/${postId}`)}>⬅️</button>
+                  <p>Date of Comment: {comment.date}</p>
                 </div>
 
               </div>
@@ -56,7 +57,7 @@ export const CommentsList = ({ userId }) => {
                 parseInt(userId) === comment.author_id.id ?
                   <div className="media-right">
                     <span className="icon">
-                      <FaEdit />
+                      <FaEdit onClick={() => navigate(`/comments/update/${comment.id}`)} />
                     </span>
                     <span className="icon">
                       <FaTrashAlt onClick={() => handleDelete(comment.id)} />
