@@ -14,20 +14,14 @@ export const PostsTable = ({ posts, deleteClickEvent, setPosts }) => {
 
   const handleApprovalStatus = (post) => {
     const copy = {...post}
-    console.log("1st", post)
-    console.log("2nd", copy)
     copy.category = post.category.id
-    console.log("3rd", copy);
     copy.tags = post.tags?.map(t => t.id) 
-    console.log("4th", copy);
     switch (post.approved) {
       case false:
         copy.approved = true
-        console.log("5th - false to true",copy);
         break;
       case true: 
         copy.approved = false
-        console.log("5th - true to false", copy);
         break;
       default: 
         window.alert("ERROR")
