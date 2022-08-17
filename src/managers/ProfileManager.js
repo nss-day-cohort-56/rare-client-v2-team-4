@@ -17,3 +17,11 @@ export const editUser = (user) => {
         body: JSON.stringify(user)
     })
 }
+export const getSingleProfile = (id) => {
+    return fetch(`http://localhost:8000/profiles/${id}`, {
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('auth_token')}`
+      }
+    })
+      .then(res => res.json())
+  }
