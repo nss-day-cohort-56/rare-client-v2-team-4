@@ -1,6 +1,8 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
 import { getProfiles, editUserActive } from "../../managers/ProfileManager"
+import { Link } from "react-router-dom"
+import { getProfiles } from "../../managers/ProfileManager"
 
 export const ProfileList = (props) => {
     const [profiles, setProfiles] = useState([])
@@ -58,7 +60,7 @@ export const ProfileList = (props) => {
                     if (profile.user?.is_active) {
                         return <section key={`profile--${profile.id}`} className="profile">
                             <div className="profile__fullName">Full Name: {profile.user.first_name} {profile.user.last_name}</div>
-                            <div className="profile__userName">Username: {profile.user.username}</div>
+                            <Link to={`/profiles/${profile.id}`} className="button is-Link is-light">Username: {profile.user.username}</Link>
                             <div className="profile__userType">User Type: {userType(profile.user)}</div>
                             <button onClick={(evt) => {
                                 evt.preventDefault()
