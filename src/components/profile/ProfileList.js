@@ -1,12 +1,13 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
-import { getProfiles, editUserActive } from "../../managers/ProfileManager"
+import { getProfiles, editUserActive, editUserStatus } from "../../managers/ProfileManager"
 import { Link } from "react-router-dom"
 
 export const ProfileList = (props) => {
     const [profiles, setProfiles] = useState([])
     const [showInactive, setInactive] = useState(false)
     const [showUserType, setUserType] = useState(0)
+    const [status, setStatus] = useState()
 
 
     useEffect(() => {
@@ -68,18 +69,28 @@ export const ProfileList = (props) => {
                             <div className="profile__fullName">Full Name: {profile.user.first_name} {profile.user.last_name}</div>
                             <Link to={`/profiles/${profile.id}`} className="button is-Link is-light">Username: {profile.user.username}</Link>
                             <div className="profile__userType">User Type: {userType(profile.user)}</div>
-                            { showUserType === 0 || showUserType != profile.id
+                            {showUserType === 0 || showUserType != profile.id
                                 ? <button id={profile.id} onClick={(evt) => userTypeForm(evt)}>Edit User Type</button>
                                 : <></>
                             }
                             {showUserType === profile.id
                                 ? <>
                                     <br />
-                                    <input type="radio" id="Author" name="false" value="false" />
+                                    <input type="radio" id="Author" name="false" value="false"
+                                        onChange={
+                                            () => {
+                                                setStatus(false)
+                                            }
+                                        } />
                                     <label for="Author">Author</label>
-                                    <input type="radio" id="Admin" name="true" value="true" />
+                                    <input type="radio" id="Admin" name="true" value="true"
+                                        onChange={
+                                            () => {
+                                                setStatus(true)
+                                            }
+                                        } />
                                     <label for="Admin">Admin</label>
-                                    <button>Save</button>
+                                    <button onClick={() => editUserStatus(status)}>Save</button>
                                     <button onClick={() => setUserType(0)}>Cancel</button>
                                     <br />
                                 </>
