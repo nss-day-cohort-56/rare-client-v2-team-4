@@ -42,14 +42,12 @@ export const ProfileList = (props) => {
     const userDemoteProcess = (profile, status) => {
         if (profile.user.is_staff === true) {
             checkDemoted(profile).then((data)=> {
-            if(data.demoteUser != undefined && data.approveUser != localStorage.getItem('user_id')){
+            if(data.demotedUser != [] && data.approveUser != localStorage.getItem('user_id')){
                 data.secondApproveUser = localStorage.getItem('user_id')
                 updateDemotion(data).then(()=> editUserStatus(profile, status).then(()=>setUserType(0)).then(()=> getProfiles().then(data => setProfiles(data))))
-                // DEMOTE
             } else {
-                // POST fetch
                 const demote = {
-                    demoteUser: profile.id,
+                    demotedUser: profile.id,
                     approveUser: localStorage.getItem('user_id')
                 }
                 createDemotion(demote).then(()=> window.alert(`one more admin needed to confirm demotion`))
