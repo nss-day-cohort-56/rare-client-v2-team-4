@@ -26,6 +26,7 @@ export const CommentsList = ({ userId }) => {
   }
 
   return <section className="section">
+    <button onClick={() => navigate(`/posts/${postId}`)}>⬅️ Back to Posts</button>
     <article className="panel is-info">
       <p className="panel-heading">
         Comments
@@ -42,21 +43,20 @@ export const CommentsList = ({ userId }) => {
               <div className="media-content">
                 <div className="content">
                   <p>
-                    <strong>{comment.author_id?.user.first_name} {comment.author_id?.user.last_name}</strong>
+                    <strong>{comment.author?.user.first_name} {comment.author?.user.last_name}</strong>
                     <br />
                   </p>
                   <p>Subject: {comment.subject}</p>
                   <p>{comment.content}</p>
-                  <p>Date of Post: {comment.date}</p>
-                  <button onClick={() => navigate(`/posts/${postId}`)}>⬅️</button>
+                  <p>{comment.created_on}</p>
                 </div>
 
               </div>
               {
-                parseInt(userId) === comment.author_id.id ?
+                parseInt(userId) === comment.author.id ?
                   <div className="media-right">
                     <span className="icon">
-                      <FaEdit />
+                      <FaEdit onClick={() => navigate(`/comments/${comment.id}/edit`)} />
                     </span>
                     <span className="icon">
                       <FaTrashAlt onClick={() => handleDelete(comment.id)} />
