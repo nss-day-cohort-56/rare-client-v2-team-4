@@ -90,7 +90,7 @@ export const ProfileList = (props) => {
                                             }
                                         } />
                                     <label for="Admin">Admin</label>
-                                    <button onClick={() => editUserStatus(profile, status).then(()=> getProfiles().then(data => setProfiles(data)))}>Save</button>
+                                    <button onClick={() => editUserStatus(profile, status).then(()=>setUserType(0)).then(()=> getProfiles().then(data => setProfiles(data)))}>Save</button>
                                     <button onClick={() => setUserType(0)}>Cancel</button>
                                     <br />
                                 </>
