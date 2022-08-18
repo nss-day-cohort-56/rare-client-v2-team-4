@@ -41,7 +41,7 @@ export const PostForm = () => {
     let todayDate = new Date()
     const postData = {
       ...post,
-      publication_date: todayDate.toISOString().split('T')[0],
+      publication_date: todayDate.toISOString().split('T')[0], //today's date, yyyy-mm-dd 
       tags: tagsForPost
       
     }

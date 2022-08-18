@@ -17,6 +17,7 @@ export const editUserActive = (user) => {
         body: JSON.stringify(user)
     })
 }
+
 export const getSingleProfile = (id) => {
     return fetch(`http://localhost:8000/profiles/${id}`, {
         headers: {
@@ -24,4 +25,26 @@ export const getSingleProfile = (id) => {
         }
     })
         .then(res => res.json())
+}
+
+export const editUserStatus = (user, status) => {
+    return fetch(`http://localhost:8000/profiles/${user.id}/user_status`, {
+        method: "PUT",
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({is_staff: status})
+    })
+}
+
+export const editUserImage = (user, image) => {
+    return fetch(`http://localhost:8000/profiles/${user.id}/user_image`, {
+        method: "PUT",
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({profile_image_url: image})
+    })
 }
