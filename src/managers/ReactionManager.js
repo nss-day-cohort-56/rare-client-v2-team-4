@@ -6,6 +6,14 @@ export const getAllReactions = () => {
     }).then(res => res.json())
 }
 
+export const getReactionsByPost = (postId) => {
+    return fetch(`http://localhost:8000/reactions/posts?post_id=${postId}`, {
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        }
+    }).then(res => res.json())
+}
+
 export const createReaction = (reaction) => {
     return fetch('http://localhost:8000/reactions', {
         method: 'POST',

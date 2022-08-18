@@ -21,9 +21,12 @@ export const EditPost = () => {
       setPost(data) 
       const tagIds = data.tags?.map(t => t.id) 
       setTagsForPost(tagIds)
+      const reactionIds = data.reactions?.map(r => r.id) 
+      setReactionsForPost(reactionIds)
     })
     getAllCategories().then(categoriesData => setCategories(categoriesData))
     getAllTags().then(data => setTags(data))
+    getAllReactions().then(data => setReactions(data))
   }, [postId])
 
   const updateTags = (tagId) => {
@@ -37,16 +40,16 @@ export const EditPost = () => {
     setTagsForPost(tagsCopy)
   }
 
-  useEffect(() => {
-    getSinglePost(postId).then(data => {
-      data.category = data.category.id
-      setPost(data) 
-      const reactionIds = data.reactions?.map(t => t.id) 
-      setReactionsForPost(reactionIds)
-    })
-    getAllCategories().then(categoriesData => setCategories(categoriesData))
-    getAllReactions().then(data => setReactions(data))
-  }, [postId])
+  // useEffect(() => {
+  //   getSinglePost(postId).then(data => {
+  //     data.category = data.category.id
+  //     setPost(data) 
+  //     const reactionIds = data.reactions?.map(r => r.id) 
+  //     setReactionsForPost(reactionIds)
+  //   })
+  //   getAllCategories().then(categoriesData => setCategories(categoriesData))
+  //   getAllReactions().then(data => setReactions(data))
+  // }, [postId])
 
   const updateReactions = (reactionId) => {
     const reactionsCopy = [...reactionsForPost]
@@ -162,7 +165,7 @@ export const EditPost = () => {
                     <div className="control">
                       <label className="checkbox" htmlFor={reaction.emoji}>
                         <input type="checkbox" name={reaction.emoji}
-                          checked={reactionsForPost.includes(reaction.id)}
+                          checked={reactionsForPost?.includes(reaction.id)}
                           onChange={() => {
                             updateReactions(reaction.id)
                           }} />
