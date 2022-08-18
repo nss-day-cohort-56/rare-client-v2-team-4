@@ -21,6 +21,7 @@ export const Login = ({ setToken, setUserId }) => {
         
         setToken(res.token)
         setUserId(res.user_id)
+        localStorage.setItem('is_staff', res.is_staff)
         navigate("/posts")
       }
       else {

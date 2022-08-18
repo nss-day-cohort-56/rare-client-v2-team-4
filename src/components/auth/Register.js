@@ -31,6 +31,7 @@ export const Register = ({ setToken, setUserId }) => {
         .then(res => {
           if ("valid" in res && res.valid) {
             setToken(res.token)
+            localStorage.setItem('is_staff', res.is_staff)
             setUserId(res.user_id)
             .then(() => navigate("/posts"))
           }

@@ -2,22 +2,28 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getAllCategories } from "../../managers/CategoryManager"
 import { createPost } from "../../managers/PostManager"
+import { getSingleProfile } from "../../managers/ProfileManager"
 import { getAllTags } from "../../managers/TagManager"
 
 export const PostForm = () => {
   const [categories, setCategories] = useState([])
   const [tags, setTags] = useState([])
+  const [profile, setProfile] = useState({}) // set current user profile
   const [post, setPost] = useState({
     image_url: ''
   })
   const [tagsForPost, setTagsForPost] = useState([])
+  const currentUserId = parseInt(localStorage.getItem('user_id')) //get current user id from local storage
   let navigate = useNavigate()
 
   useEffect(() => {
     getAllCategories().then(categoriesData => setCategories(categoriesData))
     getAllTags().then(tagsData => setTags(tagsData))
+    getSingleProfile(currentUserId).then(data => setProfile(data)) // get user profile for current user
   }, [])
 
+
+  
 
   const updateTags = (tagId) => {
     let tagsCopy = [...tagsForPost]
@@ -37,8 +43,14 @@ export const PostForm = () => {
       ...post,
       publication_date: todayDate.toISOString().split('T')[0],
       tags: tagsForPost
+      
     }
-
+    /* if user is admin, post is approved */
+    if (profile?.user?.is_staff) {
+      postData.approved = true // add approved key with true value 
+    } else {
+      postData.approved = false // add approved key with false value
+    }
     createPost(postData).then( (post) => 
       navigate(`/posts/${post.id}`)
     )

@@ -100,7 +100,7 @@ export const PostList = () => {
         />
       </div>
       <div className="panel-block">
-        <PostsTable posts={filteredPosts} />
+        <PostsTable posts={filteredPosts} setPosts={setPosts}/>
       </div>
     </article>
   </section>

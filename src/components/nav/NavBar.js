@@ -1,11 +1,17 @@
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Logo from "./rare.jpeg"
 
-export const NavBar = ({ token, setToken }) => {
+export const NavBar = ({ token, setToken, setStaff }) => {
   const navigate = useNavigate()
   const navbar = useRef()
   const hamburger = useRef()
+  // const [staff, setStaff] = useState(JSON.parse(localStorage.getItem("is_staff")))
+  const [staff, setStaffState] = useState()
+
+  useEffect(() => {
+    setStaffState(localStorage.getItem("is_staff"))
+  }, [setStaff])
 
   const showMobileNavbar = () => {
     hamburger.current.classList.toggle('is-active')
@@ -37,8 +43,10 @@ export const NavBar = ({ token, setToken }) => {
                   <Link to="/tags" className="navbar-item">Tag Management</Link>
                   <Link to="/posts/create" className="navbar-item">New Post</Link>    
                   <Link to="/categories" className="navbar-item">Category Management</Link>
-                  <Link to="/profiles" className="navbar-item">User Profiles</Link>
-
+                  { staff === "true"
+                  ?<Link to="/profiles" className="navbar-item">User Profiles</Link>
+                  :<></>
+                  }
               </>
               :
               ""
@@ -53,6 +61,7 @@ export const NavBar = ({ token, setToken }) => {
                   ? <>
                   <button className="button is-outlined" onClick={() => {
                     setToken('')
+                    setStaff('')
                     navigate('/login')
                   }}>Logout</button>
                   </>

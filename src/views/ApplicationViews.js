@@ -13,6 +13,7 @@ import { CommentForm } from "../components/comments/CommentForm"
 import { CommentsList } from "../components/comments/CommentList"
 import { ProfileList } from "../components/profile/ProfileList"
 import { UpdateComment } from "../components/comments/EditComment"
+import { ProfileDetails } from "../components/profile/Profile"
 
 
 
@@ -36,6 +37,7 @@ export const ApplicationViews = ({ token, setToken, setUserId, userId }) => {
       <Route path="/posts/:postId/add-comment" element={<CommentForm />} />
 
       <Route path="/profiles" element={<ProfileList />} />
+      <Route path="/profiles/:profileId" element={<ProfileDetails />} />
       
     </Route>
   </Routes>
