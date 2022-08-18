@@ -6,3 +6,14 @@ export const getProfileSubscriptions = (profileId) => {
     })
         .then(response => response.json())
 }
+export const createSubscription = (subscription) => {
+    return fetch("http://localhost:8000/subscriptions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Token ${localStorage.getItem('auth_token')}`
+      },
+      body: JSON.stringify(subscription)
+    })
+      .then(res => res.json())
+  }
