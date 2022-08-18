@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom"
 import { FaUserCircle } from 'react-icons/fa';
 
 export const ProfileDetails = (userId) => {
+    const [subscriptions, getSubscriptions] = useState([])
     const [profile, setProfile] = useState([])
     const { profileId } = useParams()
 
@@ -32,6 +33,7 @@ export const ProfileDetails = (userId) => {
                 <div className="profile__username">{profile.user?.username}</div>
                 <div className="profile__email">{profile.user?.email}</div>
                 <div className="profile__creationDate">{profile.user?.date_joined}</div>
+                <button className="button">Subscribe</button>
 
                 <footer>
                     {
