@@ -41,6 +41,7 @@ export const NavBar = ({ token, setToken, setStaff }) => {
                   <Link to="/posts" className="navbar-item">Posts</Link>
                   <Link to="/my-posts" className="navbar-item">My Posts</Link>
                   <Link to="/tags" className="navbar-item">Tag Management</Link>
+                  <Link to="/reactions" className="navbar-item">Reaction Management</Link>
                   <Link to="/posts/create" className="navbar-item">New Post</Link>    
                   <Link to="/categories" className="navbar-item">Category Management</Link>
                   { staff === "true"
