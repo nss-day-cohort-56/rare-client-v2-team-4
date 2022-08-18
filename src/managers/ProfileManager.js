@@ -79,3 +79,34 @@ export const updateDemotion = (demote) => {
         body: JSON.stringify(demote)
     })
 }
+
+export const checkDeactive = (user) => {
+    return fetch(`http://localhost:8000/deactives?deactivatedUser=${user.id}`, {
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        }
+    })
+        .then(res => res.json())
+}
+
+export const createDeactive = (deactive) => {
+    return fetch('http://localhost:8000/deactives', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        },
+        body: JSON.stringify(deactive)
+    }).then(res => res.json())
+}
+
+export const updateDeactive = (deactive) => {
+    return fetch(`http://localhost:8000/deactives/${deactive.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        },
+        body: JSON.stringify(deactive)
+    })
+}

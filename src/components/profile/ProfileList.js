@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
-import { getProfiles, editUserActive, editUserStatus, checkDemoted, createDemotion, updateDemotion } from "../../managers/ProfileManager"
+import { getProfiles, editUserActive, editUserStatus, checkDemoted, createDemotion, updateDemotion, createDeactive, updateDeactive, checkDeactive } from "../../managers/ProfileManager"
 import { Link } from "react-router-dom"
 
 export const ProfileList = (props) => {
@@ -42,9 +42,13 @@ export const ProfileList = (props) => {
     const userDemoteProcess = (profile, status) => {
         if (profile.user.is_staff === true) {
             checkDemoted(profile).then((data)=> {
-            if(data.demotedUser != [] && data.approveUser != localStorage.getItem('user_id')){
-                data.secondApproveUser = localStorage.getItem('user_id')
-                updateDemotion(data).then(()=> editUserStatus(profile, status).then(()=>setUserType(0)).then(()=> getProfiles().then(data => setProfiles(data))))
+
+            if ( (data.length !== 0) && (data[0]?.approveUser !== localStorage.getItem('user_id'))){
+                data[0].secondApproveUser = localStorage.getItem('user_id')
+                updateDemotion(data[0]).then(()=> editUserStatus(profile, status).then(()=> {
+                    setUserType(0)
+                    getProfiles().then(data => setProfiles(data))
+                }))
             } else {
                 const demote = {
                     demotedUser: profile.id,
@@ -58,11 +62,30 @@ export const ProfileList = (props) => {
         }
     }
 
-    //if profile.user.is_staff === true, 
-    //pull demote obj related to user
-    //if secondapproveuser is NULL, print waiting for second approval
-    // if not NULL, change user type
-    //if not staff, change user type
+    const userDeactiveProcess = (profile) => {
+        if (profile.user.is_staff === true) {
+            checkDeactive(profile).then((data)=> {
+
+            if ( (data.length !== 0) && (data[0]?.approveUser !== localStorage.getItem('user_id'))){
+                data[0].secondApproveUser = localStorage.getItem('user_id')
+                updateDeactive(data[0]).then(()=> 
+                editUserActive(profile).then(() => {
+                    setInactive(false)
+                    getProfiles().then(data => setProfiles(data))
+                }))
+            } else {
+                const deactive = {
+                    deactivatedUser: profile.id,
+                    approveUser: localStorage.getItem('user_id')
+                }
+                createDeactive(deactive).then(()=> window.alert(`one more admin needed to confirm deactivation`))
+            }
+        })
+        } else {
+            editUserActive(profile).then(() => setInactive(false)).then(() => getProfiles().then(data => setProfiles(data)))
+        }
+    }
+
 
 
     return <>
@@ -74,9 +97,7 @@ export const ProfileList = (props) => {
                         <p>Full Name: {p.user.first_name} {p.user.last_name}</p>
                         <button onClick={(evt) => {
                             evt.preventDefault()
-                            if (window.confirm("Are you sure you want to reactivate this user?")) {
-                                return editUserActive(p).then(() => getProfiles().then(data => setProfiles(data)))
-                            }
+                            editUserActive(p).then(() => setInactive(false)).then(() => getProfiles().then(data => setProfiles(data)))
                         }}>Reactivate</button>
                     </>
                 }
@@ -126,9 +147,7 @@ export const ProfileList = (props) => {
                             {localStorage.getItem('user_id') != profile.id
                                 ? <button onClick={(evt) => {
                                     evt.preventDefault()
-                                    if (window.confirm("Are you sure you want to deactivate this user?")) {
-                                        return editUserActive(profile).then(() => setInactive(false)).then(() => getProfiles().then(data => setProfiles(data)))
-                                    }
+                                    userDeactiveProcess(profile)
                                 }}>{userActive(profile.user)}</button>
                                 : <></>
                             }
