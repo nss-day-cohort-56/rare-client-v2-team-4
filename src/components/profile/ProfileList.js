@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
-import { getProfiles, editUserActive, editUserStatus } from "../../managers/ProfileManager"
+import { getProfiles, editUserActive, editUserStatus, checkDemoted, createDemotion, updateDemotion } from "../../managers/ProfileManager"
 import { Link } from "react-router-dom"
 
 export const ProfileList = (props) => {
@@ -38,6 +38,33 @@ export const ProfileList = (props) => {
     const userTypeForm = (evt) => {
         setUserType(parseInt(evt.target.id))
     }
+
+    const userDemoteProcess = (profile, status) => {
+        if (profile.user.is_staff === true) {
+            checkDemoted(profile).then((data)=> {
+            if(data.demoteUser != undefined && data.approveUser != localStorage.getItem('user_id')){
+                data.secondApproveUser = localStorage.getItem('user_id')
+                updateDemotion(data).then(()=> editUserStatus(profile, status).then(()=>setUserType(0)).then(()=> getProfiles().then(data => setProfiles(data))))
+                // DEMOTE
+            } else {
+                // POST fetch
+                const demote = {
+                    demoteUser: profile.id,
+                    approveUser: localStorage.getItem('user_id')
+                }
+                createDemotion(demote).then(()=> window.alert(`one more admin needed to confirm demotion`))
+            }
+        })
+        } else {
+            editUserStatus(profile, status).then(()=>setUserType(0)).then(()=> getProfiles().then(data => setProfiles(data)))
+        }
+    }
+
+    //if profile.user.is_staff === true, 
+    //pull demote obj related to user
+    //if secondapproveuser is NULL, print waiting for second approval
+    // if not NULL, change user type
+    //if not staff, change user type
 
 
     return <>
@@ -92,7 +119,7 @@ export const ProfileList = (props) => {
                                             }
                                         } />
                                     <label for="Admin">Admin</label>
-                                    <button onClick={() => editUserStatus(profile, status).then(()=>setUserType(0)).then(()=> getProfiles().then(data => setProfiles(data)))}>Save</button>
+                                    <button onClick={() => userDemoteProcess(profile, status)}>Save</button>
                                     <button onClick={() => setUserType(0)}>Cancel</button>
                                     <br />
                                 </>
