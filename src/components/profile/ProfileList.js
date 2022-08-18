@@ -70,7 +70,9 @@ export const ProfileList = (props) => {
                             <Link to={`/profiles/${profile.id}`} className="button is-Link is-light">Username: {profile.user.username}</Link>
                             <div className="profile__userType">User Type: {userType(profile.user)}</div>
                             {showUserType === 0 || showUserType != profile.id
-                                ? <button id={profile.id} onClick={(evt) => userTypeForm(evt)}>Edit User Type</button>
+                                ? localStorage.getItem('user_id') != profile.id
+                                ?<button id={profile.id} onClick={(evt) => userTypeForm(evt)}>Edit User Type</button>
+                                : <></>
                                 : <></>
                             }
                             {showUserType === profile.id
