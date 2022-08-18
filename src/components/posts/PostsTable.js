@@ -12,11 +12,21 @@ export const PostsTable = ({ posts, deleteClickEvent, setPosts }) => {
     getSingleProfile(currentUserId).then((data) => setProfile(data));
   }, []);
 
-  const handleApproval = (post) => {
+  const handleApprovalStatus = (post) => {
     const copy = {...post}
     copy.category = post.category.id
     copy.tags = post.tags?.map(t => t.id) 
-    copy.approved = true
+    switch (post.approved) {
+      case false:
+        copy.approved = true
+        break;
+      case true: 
+        copy.approved = false
+        break;
+      default: 
+        window.alert("ERROR")
+    }
+    
     updatePost(post.id, copy).then(()=>getAllPosts()).then((data)=>setPosts(data))
   }
 
@@ -61,13 +71,15 @@ export const PostsTable = ({ posts, deleteClickEvent, setPosts }) => {
                 )}
                 {profile?.user?.is_staff ? (
                   post.approved ? (
-                    <></>
+                    <td><button className="button is-danger" onClick={() => {
+                      handleApprovalStatus(post)
+                    }}>disapprove</button></td>
                   ) : (
                     <td>
                       <button
                         className="button is-primary"
                         onClick={() => {
-                          handleApproval(post)
+                          handleApprovalStatus(post)
                         }}
                       >
                         approve
