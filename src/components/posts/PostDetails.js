@@ -2,14 +2,18 @@ import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { getPostById } from "../../managers/PostManager"
 import { FaUserCircle } from 'react-icons/fa'
+import { getAllTags } from "../../managers/TagManager"
+import { getAllCategories } from "../../managers/CategoryManager"
+import { getAllReactions } from "../../managers/ReactionManager"
 
 export const PostDetails = ({ userId }) => {
   const [post, setPost] = useState({})
   const { postId } = useParams()
 
   useEffect(() => {
-    getPostById(postId).then(postData => setPost(postData))
+    getPostById(postId).then(data => setPost(data))
   }, [postId])
+
 
   return <section className="section">
     <div className="card">
@@ -21,6 +25,16 @@ export const PostDetails = ({ userId }) => {
       <div className="card-image">
         <figure className="image">
           <img src={post?.image_url} alt={post.title} />
+          <div>
+            <header>Tags: </header>{
+          post.tags?.map(tag => {
+            return <p>{tag.label}</p>
+          })}</div>
+          <div>
+            <header>Reactions: </header>{
+          post.reactions?.map(reaction => {
+            return <p>{reaction.emoji}</p>
+          })}</div>
         </figure>
       </div>
       <div className="card-content">

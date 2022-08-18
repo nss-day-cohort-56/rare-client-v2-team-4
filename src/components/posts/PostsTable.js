@@ -15,7 +15,8 @@ export const PostsTable = ({ posts, deleteClickEvent, setPosts }) => {
   const handleApprovalStatus = (post) => {
     const copy = {...post}
     copy.category = post.category.id
-    copy.tags = post.tags?.map(t => t.id) 
+    copy.tags = post.tags?.map(t => t.id)
+    copy.reactions = post.reactions?.map(r => r.id) 
     switch (post.approved) {
       case false:
         copy.approved = true

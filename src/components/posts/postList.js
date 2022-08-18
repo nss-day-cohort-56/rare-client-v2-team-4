@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { getAllCategories } from "../../managers/CategoryManager"
-import { getAllPosts, getPostsByCategory, getPostsByTag, getPostsByTitle } from "../../managers/PostManager"
+import { getAllPosts, getPostsByCategory, getPostsByReaction, getPostsByTag, getPostsByTitle } from "../../managers/PostManager"
+import { getAllReactions } from "../../managers/ReactionManager"
 import { getAllTags } from "../../managers/TagManager"
 import { PostsTable } from "./PostsTable"
 
@@ -9,8 +10,10 @@ export const PostList = () => {
   const [posts, setPosts] = useState([])
   const [categoryList, setCategories] = useState([])
   const [tagList, setTags] = useState([])
+  const [reactionList, setReactions] = useState([])
   const [chosenCategory, setChosenCategory] = useState(0)
   const [chosenTag, setChosenTag] = useState(0)
+  const [chosenReaction, setChosenReaction] = useState(0)
   const [searchTerms, setSearchTerms] = useState("")
   const [filteredPosts, setFiltered] = useState([])
 
@@ -20,6 +23,7 @@ export const PostList = () => {
     loadPosts()
     getAllCategories().then(data => setCategories(data))
     getAllTags().then(data => setTags(data))
+    getAllReactions().then(data => setReactions(data))
   }, [])
 
   useEffect(
@@ -64,6 +68,21 @@ export const PostList = () => {
     [chosenTag, posts]
 )
 
+useEffect(
+  () => {
+      if(chosenReaction === 0) {
+          setFiltered(posts)
+      }
+      else {
+          getPostsByReaction(chosenReaction)
+              .then((data) => {
+                  setFiltered(data)
+              })
+      }
+  },
+  [chosenReaction, posts]
+)
+
   return <section className="section">
     <article className="panel is-info">
       <p className="panel-heading">
@@ -85,6 +104,15 @@ export const PostList = () => {
         <option value="0">Search by Tag...</option>
         {tagList.map(tag => {
             return <option value={`${tag.id}`}>{tag.label}</option>
+        })}
+      </select>
+      <select className="categoryFilter" onChange={(event) => {
+        let chosenReaction = event.target.value
+        setChosenReaction(parseInt(chosenReaction))
+      }}>
+        <option value="0">Search by Reaction...</option>
+        {reactionList.map(reaction => {
+            return <option value={`${reaction.id}`}>{reaction.emoji}</option>
         })}
       </select>
       <div className="searchBar">
