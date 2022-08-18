@@ -10,14 +10,13 @@ export const CommentForm = () => {
   const [comment, setComment] = useState({
     post_id: postId,
     subject: "",
-    content: "",
-    date: ""
+    content: ""
   })
 
   const handleSave = (event) => {
     event.preventDefault()
-    saveNewComment(comment)
-    navigate(`/posts/${postId}/comments`)
+    saveNewComment(comment).then(()=> navigate(`/posts/${postId}/comments` )
+    )
   }
 
   const handleUpdate = (evt) => {
@@ -59,19 +58,6 @@ export const CommentForm = () => {
           </fieldset>
 
             <br></br>
-
-            <fieldset>
-            <div className="form-group">
-            <label>Date:</label>
-              <div className="control">
-              <input className="input" required autoFocus
-                type="date"
-                value={comment.date}
-                name = "date"
-                onChange={handleUpdate } />
-              </div>
-            </div>
-          </fieldset>
 
           <div className="field is-grouped">
             <div className="control">

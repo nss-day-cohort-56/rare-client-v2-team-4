@@ -12,7 +12,7 @@ import { EditPost } from "../components/posts/EditPost"
 import { CommentForm } from "../components/comments/CommentForm"
 import { CommentsList } from "../components/comments/CommentList"
 import { ProfileList } from "../components/profile/ProfileList"
-import { UpdateComment } from "../components/comments/EditForm"
+import { UpdateComment } from "../components/comments/EditComment"
 
 
 
@@ -31,7 +31,7 @@ export const ApplicationViews = ({ token, setToken, setUserId, userId }) => {
 
       <Route path="/categories" element={<CategoriesList />} />
       <Route path="/posts/:postId/comments" element={<CommentsList userId={userId} />} />
-      <Route path="/comments/update/:commentId" element={<UpdateComment userId={userId} />} />
+      <Route path="/comments/:commentId/edit" element={<UpdateComment userId={userId} />} />
       <Route path="/posts/:postId" element={<PostDetails userId={userId} />} />
       <Route path="/posts/:postId/add-comment" element={<CommentForm />} />
 

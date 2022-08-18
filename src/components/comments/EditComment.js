@@ -6,14 +6,10 @@ import { getSingleComment, updateComment } from "../../managers/CommentManager"
 export const UpdateComment = () => {
     const navigate = useNavigate()
     
-    const { commentId } = useParams()
+    const { commentId, postId } = useParams()
 
-    const [comment, setComment] = useState({
-        id: commentId,
-        subject: "",
-        content: "",
-        date: ""
-      })
+    const [comment, setComment] = useState({})
+
 
     /* UseEffect for single comment by id */
     useEffect(() => {
@@ -29,11 +25,6 @@ export const UpdateComment = () => {
         setComment(copyUpdatedComment)
     }
 
-    const handleSave = (event) => {
-        event.preventDefault()
-        updateComment(comment)
-        navigate(`/posts/${comment.post_id.id}/comments`)
-      }
 
     return (
         <form className="commentForm">
@@ -69,30 +60,23 @@ export const UpdateComment = () => {
     
                 <br></br>
     
-                <fieldset>
-                <div className="form-group">
-                <label>Date:</label>
-                  <div className="control">
-                  <input className="input" required autoFocus
-                    type="date"
-                    value={comment.date}
-                    name = "date"
-                    onChange={changeCommentState } />
-                  </div>
-                </div>
-              </fieldset>
     
-              <div className="field is-grouped">
-                <div className="control">
-                  <button
-                    onClick={handleSave}
-                    className="button is-success">
-                    Save
-                  </button>
-                </div>
-              </div>
+                <button type="submit" onClick={evt => {
+                    evt.preventDefault()
+                  
+                    const updatedComment = {
+                        content: comment.content,
+                        subject: comment.subject,
+                        id: commentId
+                        
+                    }
+                    // Send POST request to API
+                    updateComment(updatedComment)
+                    .then(() => navigate(`/posts/${comment.post.id}/comments`))
+                }}
+                className="btn btn-primary">Update</button>
             </div>
           </div>
         </form>
       )
-    }
+              }

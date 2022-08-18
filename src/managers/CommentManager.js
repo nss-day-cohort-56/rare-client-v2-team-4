@@ -55,15 +55,3 @@ export const getComments = () => {
   })
     .then(res => res.json())
 }
-
-export const createComment = (comment) => {
-  return fetch("http://localhost:8000/comments", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      'Authorization': `Token ${localStorage.getItem('auth_token')}`
-    },
-    body: JSON.stringify(comment)
-  })
-    .then(res => res.json())
-}
