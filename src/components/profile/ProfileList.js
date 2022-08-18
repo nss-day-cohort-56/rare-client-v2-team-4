@@ -76,21 +76,21 @@ export const ProfileList = (props) => {
                             {showUserType === profile.id
                                 ? <>
                                     <br />
-                                    <input type="radio" id="Author" name="false" value="false"
+                                    <input type="radio" id="Author" name="status" value="Author"
                                         onChange={
                                             () => {
                                                 setStatus(false)
                                             }
                                         } />
                                     <label for="Author">Author</label>
-                                    <input type="radio" id="Admin" name="true" value="true"
+                                    <input type="radio" id="Admin" name="status" value="Admin"
                                         onChange={
                                             () => {
                                                 setStatus(true)
                                             }
                                         } />
                                     <label for="Admin">Admin</label>
-                                    <button onClick={() => editUserStatus(status)}>Save</button>
+                                    <button onClick={() => editUserStatus(profile, status).then(()=> getProfiles().then(data => setProfiles(data)))}>Save</button>
                                     <button onClick={() => setUserType(0)}>Cancel</button>
                                     <br />
                                 </>

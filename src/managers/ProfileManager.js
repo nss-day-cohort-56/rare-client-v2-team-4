@@ -27,13 +27,13 @@ export const getSingleProfile = (id) => {
         .then(res => res.json())
 }
 
-export const editUserStatus = (user) => {
+export const editUserStatus = (user, status) => {
     return fetch(`http://localhost:8000/profiles/${user.id}/user_status`, {
         method: "PUT",
         headers: {
             "Authorization": `Token ${localStorage.getItem("auth_token")}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify({is_staff: status})
     })
 }
