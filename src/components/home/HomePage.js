@@ -12,18 +12,11 @@ useEffect(() => {
 }, [])
 return (
     <>
-    <div>
-    {posts.title}
-    </div>
-    <div>
-    {posts.author} 
-    </div>
-    <div>
-        
-    </div>
-    <div>
-        
-    </div>
+    {
+        posts.map(post => {
+            <div>{post.title}</div>
+        })
+    }
     </>
 )
 }
