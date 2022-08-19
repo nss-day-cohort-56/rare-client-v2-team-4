@@ -12,7 +12,10 @@ import { EditPost } from "../components/posts/EditPost"
 import { CommentForm } from "../components/comments/CommentForm"
 import { CommentsList } from "../components/comments/CommentList"
 import { ProfileList } from "../components/profile/ProfileList"
+import { UpdateComment } from "../components/comments/EditComment"
 import { ProfileDetails } from "../components/profile/Profile"
+import { ReactionList } from "../components/reactions/ReactionList"
+
 
 
 export const ApplicationViews = ({ token, setToken, setUserId, userId }) => {
@@ -22,6 +25,7 @@ export const ApplicationViews = ({ token, setToken, setUserId, userId }) => {
     <Route element={<Authorized token={token} />}>
       {/* Add Routes here */}
       <Route path="/tags" element={<TagList />} />
+      <Route path="/reactions" element={<ReactionList />} />
 
       <Route path="/posts" element={<PostList />} />
       <Route path="/my-posts" element={<MyPost />} />
@@ -30,6 +34,7 @@ export const ApplicationViews = ({ token, setToken, setUserId, userId }) => {
 
       <Route path="/categories" element={<CategoriesList />} />
       <Route path="/posts/:postId/comments" element={<CommentsList userId={userId} />} />
+      <Route path="/comments/:commentId/edit" element={<UpdateComment userId={userId} />} />
       <Route path="/posts/:postId" element={<PostDetails userId={userId} />} />
       <Route path="/posts/:postId/add-comment" element={<CommentForm />} />
 

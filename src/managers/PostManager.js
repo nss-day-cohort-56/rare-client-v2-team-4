@@ -83,6 +83,14 @@ export const getPostsByTag = (id) => {
   }).then(res => res.json())
 }
 
+export const getPostsByReaction = (id) => {
+  return fetch(`http://localhost:8000/posts?reaction_id=${id}`, {
+    headers: {
+      'Authorization': `Token ${localStorage.getItem('auth_token')}`
+    }
+  }).then(res => res.json())
+}
+
 export const getPostsByTitle = (search) => {
   return fetch(`http://localhost:8000/posts?q=${search}`, {
     headers: {

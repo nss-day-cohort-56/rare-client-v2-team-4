@@ -3,22 +3,27 @@ import { useNavigate } from "react-router-dom"
 import { getAllCategories } from "../../managers/CategoryManager"
 import { createPost } from "../../managers/PostManager"
 import { getSingleProfile } from "../../managers/ProfileManager"
+import { getAllReactions } from "../../managers/ReactionManager"
 import { getAllTags } from "../../managers/TagManager"
 
 export const PostForm = () => {
   const [categories, setCategories] = useState([])
   const [tags, setTags] = useState([])
+  const [reactions, setReactions] = useState([])
+
   const [profile, setProfile] = useState({}) // set current user profile
   const [post, setPost] = useState({
     image_url: ''
   })
   const [tagsForPost, setTagsForPost] = useState([])
+  const [reactionsForPost, setReactionsForPost] = useState([])
   const currentUserId = parseInt(localStorage.getItem('user_id')) //get current user id from local storage
   let navigate = useNavigate()
 
   useEffect(() => {
     getAllCategories().then(categoriesData => setCategories(categoriesData))
     getAllTags().then(tagsData => setTags(tagsData))
+    getAllReactions().then(reactionsData => setReactions(reactionsData))
     getSingleProfile(currentUserId).then(data => setProfile(data)) // get user profile for current user
   }, [])
 
@@ -36,13 +41,25 @@ export const PostForm = () => {
     setTagsForPost(tagsCopy)
   }
 
+  const updateReactions = (reactionId) => {
+    let reactionsCopy = [...reactionsForPost]
+    const index = reactionsCopy.indexOf(reactionId)
+    if (index < 0) {
+      reactionsCopy.push(reactionId)
+    } else {
+      reactionsCopy.splice(index, 1)
+    }
+    setReactionsForPost(reactionsCopy)
+  }
+
   const handleSubmit = (evt) => {
     evt.preventDefault()
     let todayDate = new Date()
     const postData = {
       ...post,
       publication_date: todayDate.toISOString().split('T')[0],
-      tags: tagsForPost
+      tags: tagsForPost,
+      reactions: reactionsForPost
       
     }
     /* if user is admin, post is approved */
@@ -141,6 +158,27 @@ export const PostForm = () => {
                   )
                 })
 
+              }
+            </div>
+            <div className="field">
+              <label htmlFor="content" className="emoji">Reactions: </label>
+              {
+                reactions.map(reaction => {
+                  return (
+                    <div className="field" key={`reaction--${reaction.id}`}>
+                      <div className="control">
+                        <label className="checkbox" htmlFor={reaction.emoji}>
+                          <input type="checkbox" name={reaction.emoji}
+                            checked={reactionsForPost.includes(reaction.id)}
+                            onChange={() => {
+                              updateReactions(reaction.id)
+                            }} />
+                          {reaction.emoji}
+                        </label>
+                      </div>
+                    </div>
+                  )
+                })
               }
             </div>
             <div className="field">
