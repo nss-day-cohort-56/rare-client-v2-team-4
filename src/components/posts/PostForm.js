@@ -27,9 +27,6 @@ export const PostForm = () => {
     getSingleProfile(currentUserId).then(data => setProfile(data)) // get user profile for current user
   }, [])
 
-
-  
-
   const updateTags = (tagId) => {
     let tagsCopy = [...tagsForPost]
     const index = tagsCopy.indexOf(tagId)

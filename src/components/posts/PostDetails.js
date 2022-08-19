@@ -14,8 +14,6 @@ export const PostDetails = ({ userId }) => {
     getPostById(postId).then(data => setPost(data))
   }, [postId])
 
-
-
   return <section className="section">
     <div className="card">
       <header className="card-header is-justify-content-center">
