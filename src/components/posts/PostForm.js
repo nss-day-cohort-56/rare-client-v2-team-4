@@ -52,6 +52,20 @@ export const PostForm = () => {
     setReactionsForPost(reactionsCopy)
   }
 
+  const [urlImg, setUrlImg] = useState("")
+
+    const createUrlImageString = (event) => {
+        getBase64(event.target.files[0], (base64ImageString) => {
+            setUrlImg(base64ImageString)
+        });
+    }
+
+    const getBase64 = (file, callback) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result));
+        reader.readAsDataURL(file);
+    }
+
   const handleSubmit = (evt) => {
     evt.preventDefault()
     let todayDate = new Date()
@@ -59,7 +73,8 @@ export const PostForm = () => {
       ...post,
       publication_date: todayDate.toISOString().split('T')[0],
       tags: tagsForPost,
-      reactions: reactionsForPost
+      reactions: reactionsForPost,
+      image_url: urlImg
       
     }
     /* if user is admin, post is approved */
@@ -98,15 +113,10 @@ export const PostForm = () => {
             </div>
             <div className="field">
               <label htmlFor="image_url" className="label">Image URL: </label>
-              <div className="control">
-                <div className="control">
-                  <input type="text" name="image_url" required className="input"
-                    placeholder="Image URL"
-                    value={post.image_url}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
+              <div className="url-header">
+              <input type="file" id="url_image" onChange={createUrlImageString} />
+              <input type="hidden" name="post_id" value={post.id} />
+          </div>
             </div>
             <div className="field">
               <label htmlFor="content" className="label">Content: </label>

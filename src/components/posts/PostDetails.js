@@ -15,6 +15,7 @@ export const PostDetails = ({ userId }) => {
   }, [postId])
 
 
+
   return <section className="section">
     <div className="card">
       <header className="card-header is-justify-content-center">
@@ -24,7 +25,7 @@ export const PostDetails = ({ userId }) => {
       </header>
       <div className="card-image">
         <figure className="image">
-          <img src={post?.image_url} alt={post.title} />
+          <img src={`http://localhost:8000${post?.image_url}`} alt={post.title} />
           <div>
             <header>Tags: </header>{
           post.tags?.map(tag => {
