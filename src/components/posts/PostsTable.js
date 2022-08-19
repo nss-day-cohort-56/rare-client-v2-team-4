@@ -57,7 +57,7 @@ export const PostsTable = ({ posts, deleteClickEvent, setPosts }) => {
                   <Link to={`/posts/${post.id}`}>{post.title}</Link>
                 </td>
                 <td>
-                  {post.user.user.first_name} {post.user.user.last_name}
+                <Link to={`/profiles/${post.user?.id}`}>{post.user?.user.first_name} {post.user?.user.last_name}</Link>
                 </td>
                 <td>{post.publication_date}</td>
                 <td>{post.category?.label}</td>

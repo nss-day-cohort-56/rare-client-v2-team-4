@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { getPostById } from "../../managers/PostManager"
 import { FaUserCircle } from 'react-icons/fa'
 import { getAllTags } from "../../managers/TagManager"
@@ -46,7 +46,7 @@ export const PostDetails = ({ userId }) => {
             </span>
           </div>
           <div className="media-content">
-            <p className="title is-4">{post.user?.user.first_name} {post.user?.user.last_name}</p>
+            <Link to={`/profiles/${post.user?.id}`}><p className="title is-4">{post.user?.user.first_name} {post.user?.user.last_name}</p></Link>
             <p className="subtitle is-6">@{post.user?.user.username}</p>
           </div>
         </div>
