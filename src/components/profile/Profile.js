@@ -5,16 +5,31 @@ import { editUserImage, getSingleProfile } from "../../managers/ProfileManager"
 import { FaUserCircle } from 'react-icons/fa';
 import { getPostsByUser } from "../../managers/PostManager";
 import { getPostById } from "../../managers/PostManager"
+import { createSubscription, getProfileSubscriptions } from "../../managers/SubscriptionManager";
 
 export const ProfileDetails = (userId) => {
+    const [subscriptions, setSubscriptions] = useState([]) // saves all subscriptions where current profile is the author
     const [profile, setProfile] = useState([])
     const [posts, setPosts] = useState([])
     const { profileId } = useParams()
     const { postId } = useParams()
 
-    useEffect(() => {
+    //get current user from local storage
+    const currentUserId = parseInt(localStorage.getItem('user_id'))
+    
+    // check if current user is already subscribed to author
+    const alreadySubscribed = subscriptions.find(sub => sub.subscriber.id === currentUserId)
+
+    // fetch single profile and subscriptions for profile, save to state variables
+    const getProfileAndSubscriptions = () => {
         getSingleProfile(profileId).then(data => setProfile(data))
         getPostsByUser(profileId).then(data => setPosts(data))
+        getProfileSubscriptions(profileId).then(setSubscriptions)
+    }
+
+    // on profileId change, call function above
+    useEffect(() => {
+        getProfileAndSubscriptions()
     }, [profileId])
 
 
@@ -55,6 +70,16 @@ export const ProfileDetails = (userId) => {
                 <div className="profile__username">{profile.user?.username}</div>
                 <div className="profile__email">{profile.user?.email}</div>
                 <div className="profile__creationDate">{profile.user?.date_joined}</div>
+                {/* if user is not subscribed and user is not profile author, user will see 'subscribe' button
+                if user is subscribed, user will see 'subscribed!' text
+                if user is the profile author, user will see nothing */}
+                {!alreadySubscribed && currentUserId !== profile.user?.id ? <button className="button" onClick={()=> {
+                    const newSubscription = {
+                        author: profile.user?.id
+                    }
+                    createSubscription(newSubscription).then(()=>getProfileAndSubscriptions())
+                }}>Subscribe</button> : alreadySubscribed ? <p>subscribed!</p> : <></>}
+                
                 <h3>Choose Profile Image:</h3>
                 <input type="file" id="game_image" name="action_pic" onChange={createImageString} />
                 <input type="hidden" name="game_id" value={profile.id} /> 

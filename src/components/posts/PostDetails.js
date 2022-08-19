@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { getPostById } from "../../managers/PostManager"
 import { FaUserCircle } from 'react-icons/fa'
 import { getAllTags } from "../../managers/TagManager"
@@ -14,7 +14,6 @@ export const PostDetails = ({ userId }) => {
     getPostById(postId).then(data => setPost(data))
   }, [postId])
 
-
   return <section className="section">
     <div className="card">
       <header className="card-header is-justify-content-center">
@@ -24,7 +23,7 @@ export const PostDetails = ({ userId }) => {
       </header>
       <div className="card-image">
         <figure className="image">
-          <img src={post?.image_url} alt={post.title} />
+          <img src={`http://localhost:8000${post?.image_url}`} alt={post.title} />
           <div>
             <header>Tags: </header>{
           post.tags?.map(tag => {
@@ -45,7 +44,7 @@ export const PostDetails = ({ userId }) => {
             </span>
           </div>
           <div className="media-content">
-            <p className="title is-4">{post.user?.user.first_name} {post.user?.user.last_name}</p>
+            <Link to={`/profiles/${post.user?.id}`}><p className="title is-4">{post.user?.user.first_name} {post.user?.user.last_name}</p></Link>
             <p className="subtitle is-6">@{post.user?.user.username}</p>
           </div>
         </div>
