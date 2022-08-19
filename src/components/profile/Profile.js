@@ -96,10 +96,14 @@ export const ProfileDetails = (userId) => {
                     }
 
                 </header>
-                <div className="profile__fullName">{profile.user?.first_name} {profile.user?.last_name}</div>
-                <div className="profile__username">{profile.user?.username}</div>
-                <div className="profile__email">{profile.user?.email}</div>
+                <div className="profile__fullName">Name: {profile.user?.first_name} {profile.user?.last_name}</div>
+                <div className="profile__username">Username: {profile.user?.username}</div>
+                <div className="profile__email">Email: {profile.user?.email}</div>
                 <div className="profile__creationDate">{profile.user?.date_joined}</div>
+                { currentUserId === profile.user?.id
+                    ?<div>Subscriber Count: {subscriptions.length}</div>
+                    :<></>
+                }
                 {/* if user is not subscribed and user is not profile author, user will see 'subscribe' button
                 if user is subscribed, user will see 'unsubscribe' button
                 if user is the profile author, user will see nothing */}
@@ -116,7 +120,7 @@ export const ProfileDetails = (userId) => {
                     {
                         profile.user?.is_staff === true
                             ? <div className="profile__usertype">Staff</div>
-                            : <div className="profile__usertype">User</div>
+                            : <div className="profile__usertype">Author</div>
                     }
                 </footer>
 
@@ -147,7 +151,7 @@ export const ProfileDetails = (userId) => {
                                             </div>
                                             <div className="media-content">
                                                 <p className="title is-4">{post.user?.user.first_name} {post.user?.user.last_name}</p>
-                                                <p className="subtitle is-6">@{post.user?.user.username}</p>
+                                                <p className="subtitle is-6">{post.user?.user.username}</p>
                                             </div>
                                         </div>
 
