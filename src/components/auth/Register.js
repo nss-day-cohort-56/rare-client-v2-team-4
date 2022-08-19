@@ -33,7 +33,7 @@ export const Register = ({ setToken, setUserId }) => {
             setToken(res.token)
             localStorage.setItem('is_staff', res.is_staff)
             setUserId(res.user_id)
-            .then(() => navigate("/posts"))
+            navigate("/")
           }
         })
     } else {
