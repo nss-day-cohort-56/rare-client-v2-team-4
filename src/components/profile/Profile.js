@@ -70,7 +70,7 @@ export const ProfileDetails = (userId) => {
                 <div className="profile__username">Username: {profile.user?.username}</div>
                 <div className="profile__email">Email: {profile.user?.email}</div>
                 <div className="profile__creationDate">{profile.user?.date_joined}</div>
-                { currentUserId === profile.user.id
+                { currentUserId === profile.user?.id
                     ?<div>Subscriber Count: {subscriptions.length}</div>
                     :<></>
                 }
