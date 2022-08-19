@@ -15,6 +15,7 @@ import { ProfileList } from "../components/profile/ProfileList"
 import { UpdateComment } from "../components/comments/EditComment"
 import { ProfileDetails } from "../components/profile/Profile"
 import { ReactionList } from "../components/reactions/ReactionList"
+import { HomePage } from "../components/home/HomePage"
 
 
 
@@ -24,6 +25,8 @@ export const ApplicationViews = ({ token, setToken, setUserId, userId }) => {
     <Route path="/register" element={<Register setToken={setToken} setUserId={setUserId} />} />
     <Route element={<Authorized token={token} />}>
       {/* Add Routes here */}
+      <Route path="/home" element={<HomePage />} />
+
       <Route path="/tags" element={<TagList />} />
       <Route path="/reactions" element={<ReactionList />} />
 
