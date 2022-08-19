@@ -5,7 +5,7 @@ import { editUserImage, getSingleProfile } from "../../managers/ProfileManager"
 import { FaUserCircle } from 'react-icons/fa';
 import { getPostsByUser } from "../../managers/PostManager";
 import { getPostById } from "../../managers/PostManager"
-import { createSubscription, getProfileSubscriptions } from "../../managers/SubscriptionManager";
+import { createSubscription, getProfileSubscriptions, updateSubscription } from "../../managers/SubscriptionManager";
 
 export const ProfileDetails = (userId) => {
     const [subscriptions, setSubscriptions] = useState([]) // saves all subscriptions where current profile is the author
@@ -18,8 +18,7 @@ export const ProfileDetails = (userId) => {
     const currentUserId = parseInt(localStorage.getItem('user_id'))
     
     // check if current user is already subscribed to author
-    const alreadySubscribed = subscriptions.find(sub => sub.subscriber.id === currentUserId)
-
+    const alreadySubscribed = subscriptions.find(sub => sub.subscriber.id === currentUserId && sub.is_active)
     // fetch single profile and subscriptions for profile, save to state variables
     const getProfileAndSubscriptions = () => {
         getSingleProfile(profileId).then(data => setProfile(data))
@@ -48,6 +47,37 @@ export const ProfileDetails = (userId) => {
         reader.readAsDataURL(file);
     }
 
+    // handle subscribe button
+    const handleSubscribe = () => {
+        // check if subscription object already exists in database
+        const formerSubscription = subscriptions.find(sub=>sub.subscriber.id === currentUserId && !sub.is_active)
+        let newSubscription = {}
+        //if yes, update existing subscription, set is_active, clear unsubscribed_at
+        if (formerSubscription) {
+            newSubscription = {...formerSubscription}
+            newSubscription.unsubscribed_at = null
+            newSubscription.subscriber = formerSubscription.subscriber.id
+            newSubscription.author = formerSubscription.author.id
+            newSubscription.is_active = true
+            updateSubscription(formerSubscription.id, newSubscription).then(()=>getProfileAndSubscriptions())
+        } else {
+            //if no, create new subscription
+            newSubscription = {
+                author: profile.user?.id
+            }
+            createSubscription(newSubscription).then(()=>getProfileAndSubscriptions())
+        }
+    }
+
+    // handle unsubscribe button
+    const handleUnsubscribe = () => {
+        //change is_active to false
+        const updatedSubscription = {...alreadySubscribed}
+        updatedSubscription.subscriber = alreadySubscribed.subscriber.id
+        updatedSubscription.author = alreadySubscribed.author.id
+        updatedSubscription.is_active = false
+        updateSubscription(alreadySubscribed.id, updatedSubscription).then(()=>getProfileAndSubscriptions())
+    }
 
     return (
         <article className="profiles">
@@ -71,14 +101,9 @@ export const ProfileDetails = (userId) => {
                 <div className="profile__email">{profile.user?.email}</div>
                 <div className="profile__creationDate">{profile.user?.date_joined}</div>
                 {/* if user is not subscribed and user is not profile author, user will see 'subscribe' button
-                if user is subscribed, user will see 'subscribed!' text
+                if user is subscribed, user will see 'unsubscribe' button
                 if user is the profile author, user will see nothing */}
-                {!alreadySubscribed && currentUserId !== profile.user?.id ? <button className="button" onClick={()=> {
-                    const newSubscription = {
-                        author: profile.user?.id
-                    }
-                    createSubscription(newSubscription).then(()=>getProfileAndSubscriptions())
-                }}>Subscribe</button> : alreadySubscribed ? <p>subscribed!</p> : <></>}
+                {!alreadySubscribed && currentUserId !== profile.user?.id ? <button className="button is-primary" onClick={handleSubscribe}>Subscribe</button> : alreadySubscribed ? <button className="button is-danger" onClick={handleUnsubscribe}>Unsubscribe</button> : <></>}
                 
                 <h3>Choose Profile Image:</h3>
                 <input type="file" id="game_image" name="action_pic" onChange={createImageString} />
