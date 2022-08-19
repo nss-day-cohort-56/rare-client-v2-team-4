@@ -1,12 +1,7 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
-
-import { getSingleProfile } from "../../managers/ProfileManager"
 import { useParams, Link } from "react-router-dom"
-
 import { editUserImage, getSingleProfile } from "../../managers/ProfileManager"
-import { useParams } from "react-router-dom"
-
 import { FaUserCircle } from 'react-icons/fa';
 import { getPostsByUser } from "../../managers/PostManager";
 import { getPostById } from "../../managers/PostManager"
@@ -52,10 +47,7 @@ export const ProfileDetails = (userId) => {
                                     <FaUserCircle size={'3rem'} />
                                 </span></figure>
 
-                            : <div className="profile__image">{profile.profile_image_url}</div>
-
                             : <img className="image" src={`http://localhost:8000${profile.profile_image_url}`} />
-
                     }
 
                 </header>
